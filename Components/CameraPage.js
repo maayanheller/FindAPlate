@@ -29,12 +29,6 @@ export default function CameraPage({ navigation }) {
     );
   }
 
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
-
   const takePicture = async () => {
     if (!camera) return;
     const photo = await camera.takePictureAsync();

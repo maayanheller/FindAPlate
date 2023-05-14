@@ -1,8 +1,36 @@
+import { useState } from "react";
 import { View, ImageBackground, TouchableOpacity, Text } from "react-native";
+import * as ImageManipulator from 'expo-image-manipulator';
+import { LOCALIP } from "../assets/Constants";
 
 export default function PhotoPreview({ photo, retake }) {
-  console.log("sdsfds", photo);
- return (
+  const [ocr, setOcr] = useState("");
+
+  const scanPlate = async() => {
+    const smallerImage = await ImageManipulator.manipulateAsync(photo.uri, [
+      {
+        resize: {width: 512, height: 512}
+      }
+    ],
+    {compress: 1, base64: true, format: ImageManipulator.SaveFormat.JPEG});
+    let formData = new FormData();
+
+    formData.append("name", new Date() + "plate")
+    formData.append("type", 'image/jpg')
+    formData.append('photo', smallerImage.base64);
+
+    const options = {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+  };
+
+    fetch(`http://${LOCALIP}:3000/ocr/`, options).catch((error) => console.log(error));
+  }
+  return (
     <View
       style={{
         backgroundColor: "transparent",
@@ -53,7 +81,7 @@ export default function PhotoPreview({ photo, retake }) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              //onPress={savePhoto}
+              onPress={scanPlate}
               style={{
                 width: 130,
                 height: 40,

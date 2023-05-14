@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import axios from "axios";
 import {
   DataTable,
@@ -8,8 +8,7 @@ import {
   IconButton,
   MD3Colors,
 } from "react-native-paper";
-
-const optionsPerPage = [2, 3, 4];
+import { DATAFIELDS } from "../assets/Constants";
 
 export default function CarDatatable({ plateNumber, typeAgain }) {
   const [loading, setLoading] = useState(true);
@@ -18,7 +17,7 @@ export default function CarDatatable({ plateNumber, typeAgain }) {
   useEffect(() => {
     const dataFetch = async () => {
       const response = await axios.get(
-        "https://data.gov.il/api/3/action/datastore_search?resource_id=053cea08-09bc-40ec-8f7a-156f0677aff3&q=" +
+        "https://data.gov.il/api/3/action/datastore_search?resource_id=053cea08-09bc-40ec-8f7a-156f0677aff3&q=" + 
           plateNumber
       );
       setCarData(response.data.result.records[0]);
@@ -57,22 +56,23 @@ export default function CarDatatable({ plateNumber, typeAgain }) {
             <DataTable.Title>Value</DataTable.Title>
           </DataTable.Header>
 
-          {Object.entries(carData).map((item, i) => {
-            if (item[0] != "_id") {
+          {Object.entries(carData).slice(1, -1).map((item, i) => {
               return (
                 <DataTable.Row key={i}>
-                  <DataTable.Cell>{item[0]}</DataTable.Cell>
                   <DataTable.Cell>
                     {item[1] == null || item[1] == "" ? "-" : item[1]}
                   </DataTable.Cell>
+                  <DataTable.Cell style={StyleSheet.cell}>
+                  {DATAFIELDS[item[0]]}
+                  </DataTable.Cell>
                 </DataTable.Row>
               );
-            }
           })}
 
           <DataTable.Pagination
             style={{
               width: "100%",
+              backgroundColor: 'red'
             }}
           />
         </DataTable>
