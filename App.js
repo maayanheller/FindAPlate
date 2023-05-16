@@ -16,7 +16,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Plate Scanner" component={Camera} />
 
-          <Stack.Screen name="Type Plate" component={TypePlate} />
+          <Stack.Screen name="Type Plate" component={TypePlate} initialParams={{ plate: "" }} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

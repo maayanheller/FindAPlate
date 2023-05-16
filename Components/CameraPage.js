@@ -45,7 +45,7 @@ export default function CameraPage({ navigation }) {
   return (
     <View style={styles.container}>
       {previewVisible && capturedImage ? (
-        <PhotoPreview retake={retake} photo={capturedImage} />
+        <PhotoPreview retake={retake} photo={capturedImage} navigation={navigation} />
       ) : (
         <Camera ref={(r) => (camera = r)} style={styles.camera} type={type}>
           <View style={styles.shootButtonContainer}>
@@ -59,7 +59,9 @@ export default function CameraPage({ navigation }) {
               style={styles.editButton}
               iconColor={MD2Colors.purple800}
               size={50}
-              onPress={() => navigation.navigate("Type Plate")}
+              onPress={() => navigation.navigate("Type Plate", {
+                plate: ""
+              })}
             />
           </View>
         </Camera>

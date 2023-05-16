@@ -3,8 +3,9 @@ import { Searchbar } from "react-native-paper";
 import { View, Text } from "react-native";
 import CarDatatable from "./CarDatatable";
 
-export default function TypePlate({ navigation }) {
-  const [input, setInput] = useState("");
+export default function TypePlate({ navigation, route  }) {
+  const { plate } = route.params;
+  const [input, setInput] = useState(JSON.stringify(plate));
   const [shouldSearch, setShouldSearch] = useState(false);
 
   const search = () => {

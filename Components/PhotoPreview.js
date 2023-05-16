@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { View, ImageBackground, TouchableOpacity, Text } from "react-native";
 import * as ImageManipulator from 'expo-image-manipulator';
 import { LOCALIP } from "../assets/Constants";
 
-export default function PhotoPreview({ photo, retake }) {
-  const [ocr, setOcr] = useState("");
+export default function PhotoPreview({ photo, retake, navigation }) {
 
   const scanPlate = async() => {
     const smallerImage = await ImageManipulator.manipulateAsync(photo.uri, [
@@ -15,7 +14,7 @@ export default function PhotoPreview({ photo, retake }) {
     {compress: 1, base64: true, format: ImageManipulator.SaveFormat.JPEG});
     let formData = new FormData();
 
-    formData.append("name", new Date() + "plate")
+    formData.append("name", new Date() + "_plate")
     formData.append("type", 'image/jpg')
     formData.append('photo', smallerImage.base64);
 
@@ -28,7 +27,15 @@ export default function PhotoPreview({ photo, retake }) {
       },
   };
 
-    fetch(`http://${LOCALIP}:3000/ocr/`, options).catch((error) => console.log(error));
+    fetch(`http://${LOCALIP}:3000/ocr/`, options)
+    .then((res) => {
+      res.json().then((data) => {
+        console.log(data)
+        navigation.navigate('Type Plate', {
+          plate: data
+        })
+    })})
+    .catch((error) => console.log(error));
   }
   return (
     <View
