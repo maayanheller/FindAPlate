@@ -1,6 +1,7 @@
 import { Camera, CameraType } from "expo-camera";
 import { useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
 import { IconButton, MD2Colors } from "react-native-paper";
 
 import PhotoPreview from "./PhotoPreview";
@@ -11,6 +12,7 @@ export default function CameraPage({ navigation }) {
   const [permission, requestPermission] = camera.useCameraPermissions();
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState({});
+  
 
   if (!permission) {
     // Camera permissions are still loading
@@ -35,6 +37,15 @@ export default function CameraPage({ navigation }) {
     console.log(photo);
     setPreviewVisible(true);
     setCapturedImage(photo);
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
+    });
+    setCapturedImage(result.assets[0]);
+    setPreviewVisible(true);
   };
 
   const retake = () => {
@@ -62,6 +73,13 @@ export default function CameraPage({ navigation }) {
               onPress={() => navigation.navigate("Type Plate", {
                 plate: ""
               })}
+            />
+            <IconButton
+              icon="view-gallery"
+              style={styles.galleryButton}
+              iconColor={MD2Colors.purple800}
+              size={50}
+              onPress={() => pickImage()}
             />
           </View>
         </Camera>
@@ -98,9 +116,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  editButton: {
+  galleryButton: {
     flex: 1,
     position: "absolute",
     bottom: 0,
   },
+  editButton: {
+    flex: 1,
+    position: "absolute",
+    bottom:0,
+    right: 0,
+  }
 });

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Searchbar } from "react-native-paper";
 import { View, Text } from "react-native";
 import CarDatatable from "./CarDatatable";
+import { Constants } from "expo-constants";
 
 export default function TypePlate({ navigation, route  }) {
   const { plate } = route.params;

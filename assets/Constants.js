@@ -1,4 +1,4 @@
-export const LOCALIP = '192.168.1.56';
+export const LOCALIP = "0.0.0.0";
 export const DATAFIELDS = {
     mispar_rechev: "מספר רכב",
     tozeret_cd: "קוד תוצר",

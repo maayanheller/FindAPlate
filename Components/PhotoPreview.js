@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
 import { View, ImageBackground, TouchableOpacity, Text } from "react-native";
-import * as ImageManipulator from 'expo-image-manipulator';
 import { LOCALIP } from "../assets/Constants";
+import * as ImageManipulator from 'expo-image-manipulator';
 
 export default function PhotoPreview({ photo, retake, navigation }) {
 
@@ -35,7 +34,6 @@ export default function PhotoPreview({ photo, retake, navigation }) {
           plate: data
         })
     })})
-    .catch((error) => console.log(error));
   }
   return (
     <View
